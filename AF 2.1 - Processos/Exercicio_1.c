@@ -22,37 +22,32 @@
 
 int main(int argc, char** argv) {
 
-    int filho1;
-    filho1 = fork();
-
-    if (filho1 > 0) {
-        printf("Processo filho %d criado\n", filho1);
+    pid_t pFilho1;
+    pid_t pFilho2;
+    pFilho1 = fork();
 
 
-        int filho2;
-        filho2 = fork();
+    if (pFilho1 == 0) {
+        printf("Processo pai criou %d\n", pFilho1);
 
-        if (filho2 > 0) {
-            printf("Processo filho %d criado\n", filho2);
-        } 
-        else if (filho2 == 0) {
-            printf("Processo filho criado\n");
+        pFilho2 = fork();
+
+        if (pFilho2 == 0) {
+            printf("Processo pai criou %d\n", pFilho2);
+            wait(NULL);
         }
 
-    } 
-    else if (filho1 == 0) {
-        printf("Processo filho criado\n");
+        else {
+            printf("Processo filho %d criado\n", getpid());
+        } 
+    }
+    else {
+        printf("Processo filho %d criado\n", getpid());
     }
 
-    // ....
+    if(wait(NULL) < 0){
+        printf("Processo pai finalizado!\n");
+    }
 
-    /*************************************************
-    * Dicas: *
-    * 1. Leia as intruções antes do main(). *
-    * 2. Faça os prints exatamente como solicitado. *
-    * 3. Espere o término dos filhos *
-    *************************************************/
-
-    printf("Processo pai finalizado!\n");
     return 0;
 }
