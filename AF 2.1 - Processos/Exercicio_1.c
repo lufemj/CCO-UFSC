@@ -23,17 +23,16 @@
 int main(int argc, char** argv) {
 
     pid_t pFilho1;
-    pid_t pFilho2;
+    printf("Processo pai criou %d\n", pFilho1);
     pFilho1 = fork();
 
 
     if (pFilho1 == 0) {
-        printf("Processo pai criou %d\n", pFilho1);
-
+        pid_t pFilho2;
+        printf("Processo pai criou %d\n", pFilho2);
         pFilho2 = fork();
 
         if (pFilho2 == 0) {
-            printf("Processo pai criou %d\n", pFilho2);
             wait(NULL);
         }
 
