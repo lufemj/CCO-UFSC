@@ -23,30 +23,27 @@
 int main(int argc, char** argv) {
 
     pid_t pFilho1;
-    printf("Processo pai criou %d\n", pFilho1);
     pFilho1 = fork();
 
+    if (pFilho1 != 0) {
+        printf("Processo pai criou %d\n", pFilho1);
 
-    if (pFilho1 == 0) {
         pid_t pFilho2;
-        printf("Processo pai criou %d\n", pFilho2);
         pFilho2 = fork();
 
-        if (pFilho2 == 0) {
+        if (pFilho2 != 0) {
+            printf("Processo pai criou %d\n", pFilho2);
             wait(NULL);
+            wait(NULL);
+            printf("Processo pai finalizado!\n");
+        } 
+        else if (pFilho2 == 0) {
+            printf("Processo filho %d criado\n", getpid());
         }
 
-        else {
-            printf("Processo filho %d criado\n", getpid());
-        } 
-    }
-    else {
+    } 
+    else if (pFilho1 == 0) {
         printf("Processo filho %d criado\n", getpid());
     }
-
-    if(wait(NULL) < 0){
-        printf("Processo pai finalizado!\n");
-    }
-
     return 0;
 }
