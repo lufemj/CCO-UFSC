@@ -25,44 +25,46 @@
 
 int main(int argc, char** argv) {
     pid_t pFilho1, pFilho2, pNeto;
-    int i;
 
-    // criação dos dois processos filhos
     pFilho1 = fork();
-    if (pFilho1 == 0) { // processo filho 1
-        for (i = 0; i < 3; i++) {
+    if (pFilho1 == 0) {
+        printf("Processo %d, filho de %d\n", getpid(), getppid());
+        for (int i = 0; i < 3; i++) {
             pNeto = fork();
-            if (pNeto == 0) { // processo neto
+            if (pNeto == 0) {
                 printf("Processo %d, filho de %d\n", getpid(), getppid());
                 sleep(5);
                 printf("Processo %d finalizado\n", getpid());
+                return 0;
             }
         }
-        for (i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             wait(NULL);
         }
         printf("Processo %d finalizado\n", getpid());
+        return 0;
     }
 
     pFilho2 = fork();
-    if (pFilho2 == 0) { // processo filho 2
-        for (i = 0; i < 3; i++) {
+    if (pFilho2 == 0) {
+        printf("Processo %d, filho de %d\n", getpid(), getppid());
+        for (int i = 0; i < 3; i++) {
             pNeto = fork();
-            if (pNeto == 0) { // processo neto
+            if (pNeto == 0) {
                 printf("Processo %d, filho de %d\n", getpid(), getppid());
                 sleep(5);
                 printf("Processo %d finalizado\n", getpid());
+                return 0;
             }
         }
-        for (i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             wait(NULL);
         }
         printf("Processo %d finalizado\n", getpid());
+        return 0;
     }
 
-    // processo principal
-    printf("Processo principal %d, criou os processos filhos %d e %d\n", getpid(), pFilho1, pFilho2);
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         wait(NULL);
     }
     printf("Processo principal %d finalizado\n", getpid());
