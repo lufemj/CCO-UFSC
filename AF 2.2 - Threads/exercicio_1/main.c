@@ -27,9 +27,13 @@
 int contador_global = 0;
 
 void * thread_run(void *arg) {
-    printf("Thread iniciada!\n");
-    fflush(stdout);
     int val = *((int *) arg);
+
+
+    for (int i = 0; i < val; i++) {
+        contador_global++
+    }
+    
     return 0;
 }
 
