@@ -31,13 +31,13 @@ void * thread_run(void *arg) {
 
 
     for (int i = 0; i < val; i++) {
-        contador_global++
+        contador_global++;
     }
     
     return 0;
 }
 
-int main(int argc, char **argv[]) {
+int main(int argc, char *argv[]) {
     if (argc < 3) {
         printf("n_threads é obrigatório!\n");
         printf("Uso: %s n_threads n_loops\n", argv[0]);
