@@ -60,7 +60,7 @@ structures::ArrayQueue<T>::ArrayQueue() {
 
 template<typename T>
 structures::ArrayQueue<T>::ArrayQueue(std::size_t max) {
-    max_size = max;
+    max_size_ = max;
     size_ = 0;
     begin_ = 0;
     end_ = -1;
@@ -93,7 +93,7 @@ T structures::ArrayQueue<T>::dequeue() {
         T data = contents[begin_];
         begin_ = (begin_ + 1) % max_size_;
         size_--;
-        return aux;
+        return data;
     }
 }
 
