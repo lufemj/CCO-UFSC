@@ -5,6 +5,14 @@
 #include <stdio.h>
 #include <pthread.h>
 
+typedef struct {
+    double* a;
+    double* b;
+    double* c;
+    int displacement;
+    int loops;
+} arguments;
+
 // Lê o conteúdo do arquivo filename e retorna um vetor E o tamanho dele
 // Se filename for da forma "gen:%d", gera um vetor aleatório com %d elementos
 //
@@ -20,6 +28,14 @@ double* load_vector(const char* filename, int* out_size);
 // tenham tamanho size.
 void avaliar(double* a, double* b, double* c, int size);
 
+void* routine(void* arg) {
+    arguments* params = (arguments *) arg;
+
+    for (int j = params->displacement; j < params->displacement + params->loops; j++) 
+        params->c[j] = params->a[j] + params->b[j];
+
+    return NULL;
+}
 
 int main(int argc, char* argv[]) {
     // Gera um resultado diferente a cada execução do programa
@@ -66,11 +82,47 @@ int main(int argc, char* argv[]) {
     //Cria vetor do resultado 
     double* c = malloc(a_size*sizeof(double));
 
-    // Calcula com uma thread só. Programador original só deixou a leitura 
-    // do argumento e fugiu pro caribe. É essa computação que você precisa 
-    // paralelizar
-    for (int i = 0; i < a_size; ++i) 
-        c[i] = a[i] + b[i];
+
+    if (n_threads > a_size) 
+        n_threads = a_size;
+
+    pthread_t threads[n_threads];
+    int resto = a_size % n_threads;
+
+    int deslocamento = 0;
+
+    arguments arg_vector[n_threads];
+
+    for (int i = 0; i < n_threads; i++) {
+        arg_vector[i].a = a;
+        arg_vector[i].b = b;
+        arg_vector[i].c = c;
+
+        if (i <= resto-1) {
+
+            int n_operacoes = a_size/n_threads + 1;
+
+            arg_vector[i].displacement = deslocamento;
+            arg_vector[i].loops = n_operacoes;
+
+            pthread_create(&threads[i], NULL, routine, &arg_vector[i]);
+            
+            deslocamento += n_operacoes;
+        } else {
+            int n_operacoes = a_size/n_threads;
+
+            arg_vector[i].displacement = deslocamento;
+            arg_vector[i].loops = n_operacoes;
+
+            pthread_create(&threads[i], NULL, routine, &arg_vector[i]);
+            
+            deslocamento += n_operacoes;
+        }
+    }
+
+    for (int i = 0; i < n_threads; i++) {
+        pthread_join(threads[i], NULL);
+    }
 
     //    +---------------------------------+
     // ** | IMPORTANTE: avalia o resultado! | **

@@ -26,18 +26,15 @@
 
 int contador_global = 0;
 
-void * thread_run(void *arg) {
-    int val = *((int *) arg);
-
-
-    for (int i = 0; i < val; i++) {
+void * routine(void * arg) {
+    int n_loops = *((int *) arg);
+    for (int i = 0; i < n_loops; i++) {
         contador_global++;
     }
-    
-    return 0;
+    return NULL;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     if (argc < 3) {
         printf("n_threads é obrigatório!\n");
         printf("Uso: %s n_threads n_loops\n", argv[0]);
@@ -46,11 +43,14 @@ int main(int argc, char *argv[]) {
 
     int n_threads = atoi(argv[1]);
     int n_loops = atoi(argv[2]);
-
+    
     pthread_t threads[n_threads];
 
+    // printf("Criando %d threads...\n", n_threads);
+    // printf("Cada thread incrementará %d vezes o contador...\n", n_loops);
+
     for (int i = 0; i < n_threads; i++) {
-        pthread_create(&threads[i], NULL, thread_run, (void *) &n_loops);
+        pthread_create(&threads[i], NULL, routine, &n_loops);
     }
 
     for (int i = 0; i < n_threads; i++) {
