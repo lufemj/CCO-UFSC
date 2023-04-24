@@ -33,25 +33,29 @@ extern pthread_mutex_t matrix_mutex;
 // 
 // O programa precisa ser RÁPIDO E CORRETO.
 void * matrix_mult_worker(void *arg) {
-    int i;
+    int i, j;
     int minha_linha, minha_coluna;
 
     while (linha_atual < tamanho_matriz) {
         minha_linha = linha_atual;
         minha_coluna = coluna_atual;
 
+        pthread_mutex_lock(&matrix_mutex);
         coluna_atual += 1;
         if (coluna_atual >= tamanho_matriz) {
             coluna_atual = 0;
             linha_atual += 1;
         }
+        pthread_mutex_unlock(&matrix_mutex);
 
         if (minha_linha >= tamanho_matriz)  
             break;
 
+        pthread_mutex_lock(&matrix_mutex);
         for (i = 0; i < tamanho_matriz; i++) {
             resultado[minha_linha][minha_coluna] += matriz1[minha_linha][i] * matriz2[i][minha_coluna];
         }
+        pthread_mutex_unlock(&matrix_mutex);
     }
 
     return NULL;
