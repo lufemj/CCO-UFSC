@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "helper.c"
 
 int gValue = 0;
 pthread_mutex_t gMtx;
@@ -47,8 +48,11 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    //Inicializa o mutex
-    pthread_mutex_init(&gMtx, NULL);
+    //Inicializa o mutex recursivo
+    pthread_mutexattr_t attrs;
+    pthread_mutexattr_init(&attrs);
+    pthread_mutexattr_settype(&attrs, PTHREAD_MUTEX_RECURSIVE);
+    pthread_mutex_init(&gMtx, &attrs);
 
     int args[n_threads];
     int* results[n_threads];
