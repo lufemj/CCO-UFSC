@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <time.h>
+#include "helper.c"
+#include "thread.c"
 
 //Funções auxiliares. Definidas em helper.c -- NÃO DEVEM SER ALTERADAS
 void gerar_matrizes();
