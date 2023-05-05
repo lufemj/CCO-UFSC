@@ -37,26 +37,25 @@ void * matrix_mult_worker(void *arg) {
     int minha_linha, minha_coluna;
 
     while (linha_atual < tamanho_matriz) {
+        
+        pthread_mutex_lock(&matrix_mutex);
         minha_linha = linha_atual;
         minha_coluna = coluna_atual;
-
-        pthread_mutex_init(&matrix_mutex, NULL);
+        
         coluna_atual += 1;
         if (coluna_atual >= tamanho_matriz) {
             coluna_atual = 0;
             linha_atual += 1;
         }
-        pthread_mutex_destroy(&matrix_mutex);
+        pthread_mutex_unlock(&matrix_mutex);
 
-        
         if (minha_linha >= tamanho_matriz)  
             break;
 
-        pthread_mutex_init(&matrix_mutex, NULL);
         for (i = 0; i < tamanho_matriz; i++) {
             resultado[minha_linha][minha_coluna] += matriz1[minha_linha][i] * matriz2[i][minha_coluna];
-            pthread_mutex_destroy(&matrix_mutex);
         }
+        
     }
 
     return NULL;
