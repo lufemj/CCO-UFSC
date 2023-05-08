@@ -5,51 +5,31 @@
 #include <stdlib.h>
 
 FILE* out;
-sem_t semaphore;
-int valorA;
-int valorB;
+sem_t sem1, sem2;
 
-/*
 void *thread_a(void *args) {
-    sem_wait(&semaphore);
     for (int i = 0; i < *(int*)args; ++i) {
 	//      +---> arquivo (FILE*) destino
 	//      |    +---> string a ser impressa
 	//      v    v
+        sem_wait(&sem1);
         fprintf(out, "A");
         // Importante para que vocês vejam o progresso do programa
         // mesmo que o programa trave em um sem_wait().
         fflush(stdout);
-    }
-    sem_post(&semaphore);
-    return NULL;
-}
-*/
-
-void *thread_a(void *args) {
-    for (int i = 0; i < *(int*)args; ++i) {
-        sem_wait(&semaphore);
-        if((abs(valorA-valorB) < 2)) {
-            fprintf(out, "A");
-            fflush(stdout);
-            valorA++;
-        } else {
-            sem_wait(&semaphore);
-            fprintf(out, "A");
-            fflush(stdout);
-            valorA++;
-            sem_post(&semaphore);
-        }
+        sem_post(&sem2);
     }
     return NULL;
 }
 
 void *thread_b(void *args) {
     for (int i = 0; i < *(int*)args; ++i) {
+        sem_wait(&sem2);
         fprintf(out, "B");
         fflush(stdout);
+        sem_post(&sem1);
     }
-    sem_post(&semaphore);
+    return NULL;
 }
 
 int main(int argc, char** argv) {
@@ -63,7 +43,8 @@ int main(int argc, char** argv) {
 
     pthread_t ta, tb;
 
-    sem_init(&semaphore, 0, 1);
+    sem_init(&sem1, 0, 1);
+    sem_init(&sem2, 0, 1);
 
     // Cria threads
     pthread_create(&ta, NULL, thread_a, &iters);
@@ -73,7 +54,8 @@ int main(int argc, char** argv) {
     pthread_join(ta, NULL);
     pthread_join(tb, NULL);
 
-    sem_destroy(&semaphore);
+    sem_destroy(&sem1);
+    sem_destroy(&sem2);
 
     //Imprime quebra de linha e fecha arquivo
     fprintf(out, "\n");

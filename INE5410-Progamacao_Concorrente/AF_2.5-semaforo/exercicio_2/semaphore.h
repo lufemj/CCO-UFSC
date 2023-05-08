@@ -8,7 +8,7 @@
     #endif /*__deprecated*/
 
     #define __deprecated
-    #include </Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/semaphore.h>
+    #include </usr/include/semaphore.h>
     #undef __deprecated
     
     #ifdef OLD_DEPRECATED
@@ -48,7 +48,7 @@
     
 #else
     
-    #include </Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/semaphore.h>
+    #include </usr/include/semaphore.h>
     
 #endif /*__APPLE__*/
 #endif /*__INE5410_SEMAPHORE_H__*/
