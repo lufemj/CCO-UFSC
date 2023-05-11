@@ -1,4 +1,4 @@
-# CCO-UFSC
+# Computer Science Degree - UFSC
 ## UFSC Academic Exercises and Projects Repository
 
 This repository is a collection of my academic exercises and projects completed during my time at the Federal University of Santa Catarina (UFSC).
