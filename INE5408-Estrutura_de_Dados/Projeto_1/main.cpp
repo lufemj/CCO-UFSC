@@ -5,6 +5,14 @@
 #include <vector>
 #include <algorithm>
 
+
+bool validacaoArquivo(const std::string& file) {
+    /*
+    LÓGICA DE VALIDAÇÃO
+    */
+   return true;
+}
+
 std::string extractDado(const std::string& file, std::size_t pos_cenario, const std::string& tag, const std::string& var) {
     std::string dado;
     size_t startPos = file.find("<" + tag + ">", pos_cenario);
@@ -52,9 +60,12 @@ int main() {
     ss << arquivo.rdbuf();
     std::string file = ss.str();
 
-    /*
-    LÓGICA DE VALIDAÇÃO
-    */
+    bool valido = validacaoArquivo(file);
+
+    if (!valido) {
+        std::cout << "erro" << std::endl;
+        return 1;
+    }
 
     int num_cenarios = 0;
     std::size_t init = 0;
