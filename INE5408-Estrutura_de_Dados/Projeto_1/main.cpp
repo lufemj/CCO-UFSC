@@ -75,7 +75,7 @@ int main() {
         init += tag.length();
     }
 
-    std::size_t* pos_cenarios = new std::size_t[num_cenarios]; // Definir o tamanho do array após contar as ocorrências
+    std::size_t* pos_cenarios = new std::size_t[num_cenarios];
 
     std::size_t aux = 0;
     for (int i = 0; i < num_cenarios; i++) {
