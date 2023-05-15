@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 std::string extractDado(const std::string& file, std::size_t pos_cenario, const std::string& tag, const std::string& var) {
     std::string dado;
@@ -20,13 +21,42 @@ std::string extractDado(const std::string& file, std::size_t pos_cenario, const 
     return dado;
 }
 
+int** matrizGerador(const std::string& matriz_string, int altura, int largura, bool zero) {
+    int** matriz = new int*[altura];
+    
+    std::string matriz_valores = matriz_string;
+    
+    matriz_valores.erase(std::remove(matriz_valores.begin(), matriz_valores.end(), '\n'), matriz_valores.end());
+
+    for (int i = 0; i < altura; i++) {
+        matriz[i] = new int[largura];
+        for (int j = 0; j < largura; j++) {
+            char valor = matriz_valores[i * largura + j];
+            if (valor == '0' || valor == '1') {
+                matriz[i][j] = zero ? 0 : valor - '0';
+            }
+        }
+    }
+    return matriz;
+}
+
+int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largura, int robo_x, int robo_y) {
+    int casasLimpas = 0;
+    
+    return casasLimpas;
+}
+
 int main() {
     std::ifstream arquivo("cenarios1.xml");
     std::ostringstream ss;
     ss << arquivo.rdbuf();
     std::string file = ss.str();
-    int num_cenarios = 0;
 
+    /*
+    LÓGICA DE VALIDAÇÃO
+    */
+
+    int num_cenarios = 0;
     std::size_t init = 0;
     std::string tag = "<cenario>";
     while ((init = file.find(tag, init)) != std::string::npos) {
@@ -50,16 +80,15 @@ int main() {
         int largura = std::stoi(extractDado(file, pos_cenarios[i],"dimensoes", "largura"));
         int robo_x = std::stoi(extractDado(file, pos_cenarios[i],"robo", "x"));
         int robo_y = std::stoi(extractDado(file, pos_cenarios[i],"robo", "y"));
-        std::cout << nome << std::endl;
-        std::cout << altura << std::endl;
-        std::cout << largura << std::endl;
-        std::cout << robo_x << std::endl;
-        std::cout << robo_y << std::endl;
         
-        std::cout << "=======================" << std::endl;
+        std::string matriz_string = extractDado(file, pos_cenarios[i], "cenario", "matriz"); 
+        int **matriz_cenario = matrizGerador(matriz_string, altura, largura, false);
+        int **matriz_zero = matrizGerador(matriz_string, altura, largura, true);
+
+        int casasLimpas = operacaoRobo(matriz_cenario, matriz_zero, altura, largura, robo_x, robo_y);
+
+        std::cout << nome << " " << casasLimpas << std::endl;
+
     }
-
-    delete[] pos_cenarios;
-
     return 0;
 }
