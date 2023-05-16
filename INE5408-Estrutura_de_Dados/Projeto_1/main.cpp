@@ -9,7 +9,6 @@
 #include <vector>
 #include <algorithm>
 #include "fila.cpp"
-#include "lista.cpp"
 #include "pilha.cpp"
 
 struct Coordenadas {
@@ -26,15 +25,15 @@ int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largur
     int casasLimpas = 0;
     Coordenadas coord{robo_x, robo_y};
     structures::ArrayQueue<Coordenadas> fila(100);
-    structures::ArrayList<Coordenadas> lista(9999);
 
     // Inicializa o robo na posição correta da matriz de zeros; 
     if (matriz_cenario[robo_x][robo_y] == 1) {
         matriz_zero[robo_x][robo_y] = 1;
+        matriz_cenario[robo_x][robo_y] = 0;
     } else {
         matriz_zero[robo_x][robo_y] = 0;
     }
-    lista.push_back(coord);
+    //lista.push_back(coord);
     fila.enqueue(coord);
 
     while(!fila.empty()) {
@@ -49,34 +48,34 @@ int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largur
         Coordenadas coordDown{first.x, first.y - 1};
 
         if (coordRight.x < altura && coordRight.y >= 0 && coordRight.y < largura) {
-            if (matriz_cenario[coordRight.x][coordRight.y] == 1 && !lista.contains(coordRight)) {
+            if (matriz_cenario[coordRight.x][coordRight.y] == 1) {
                 matriz_zero[coordRight.x][coordRight.y] = 1;
-                lista.push_back(coordRight);
+                matriz_cenario[coordRight.x][coordRight.y] = 0;
                 fila.enqueue(coordRight);
             }
         }
 
         if (coordLeft.x >= 0 && coordLeft.y >= 0 && coordLeft.y < largura) {
-            if (matriz_cenario[coordLeft.x][coordLeft.y] == 1 && !lista.contains(coordLeft)) {
+            if (matriz_cenario[coordLeft.x][coordLeft.y] == 1) {
                 matriz_zero[coordLeft.x][coordLeft.y] = 1;
-                lista.push_back(coordLeft);
+                matriz_cenario[coordLeft.x][coordLeft.y] = 0;
                 fila.enqueue(coordLeft);
             }
         }
 
         if (coordUp.x >= 0 && coordUp.x < altura && coordUp.y >= 0) {
-            if (matriz_cenario[coordUp.x][coordUp.y] == 1 && !lista.contains(coordUp)) {
+            if (matriz_cenario[coordUp.x][coordUp.y] == 1) {
                 matriz_zero[coordUp.x][coordUp.y] = 1;
-                lista.push_back(coordUp);
+                matriz_cenario[coordUp.x][coordUp.y] = 0;
                 fila.enqueue(coordUp);
             }
         }
 
 
         if (coordDown.x >= 0 && coordDown.x < altura && coordDown.y >= 0 && coordDown.y < largura) {
-            if (matriz_cenario[coordDown.x][coordDown.y] == 1 && !lista.contains(coordDown)) {
+            if (matriz_cenario[coordDown.x][coordDown.y] == 1) {
                 matriz_zero[coordDown.x][coordDown.y] = 1;
-                lista.push_back(coordDown);
+                matriz_cenario[coordDown.x][coordDown.y] = 0;
                 fila.enqueue(coordDown);
             }
         }
