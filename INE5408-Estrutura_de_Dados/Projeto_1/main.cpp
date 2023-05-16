@@ -1,3 +1,7 @@
+//Alunos: Luis Fernando Mendonça Junior     22103512
+//        Isaque Floriano Beirith           22100624
+
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -6,6 +10,7 @@
 #include <algorithm>
 #include "fila.cpp"
 #include "lista.cpp"
+#include "pilha.cpp"
 
 struct Coordenadas {
     int x;
@@ -88,11 +93,80 @@ int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largur
     return casasLimpas;
 }
 
-bool validacaoArquivo(const std::string& file) {
-    /*
-    LÓGICA DE VALIDAÇÃO
-    */
-   return true;
+bool validar(std::string nomearquivo) {
+
+    char caractere;
+    bool aberta = false;
+    bool fechamento = false;
+    std::string valor = "";
+
+    structures::ArrayStack<std::string> pilha(15);
+
+    std::ifstream arquivo;
+    arquivo.open(nomearquivo);
+
+    if (arquivo.is_open()) {
+        while (!arquivo.eof()) {
+            arquivo >> caractere;
+
+            // Verifica se é o final da tag.
+            if (caractere == '>') {
+
+                // Caso a tag possua caractere de fechamento ('/').
+                if (fechamento) {
+                    aberta = false;
+                    fechamento = false;
+
+                    // Caso o topo da pilha esteja vazio, uma tag foi fechada antes de ser aberta.
+                    if (pilha.empty()) {
+                        return false;
+                    } else {
+
+                        // Caso o topo da pilha seja o valor de fechamento, a pilha é decrementada.
+                        if (pilha.top() == valor)  {
+                        valor = "";
+                        caractere = ' ';
+                        pilha.pop();
+                        } 
+
+                        // Caso o topo da pilha seja diferente do valor que será fechado, um erro acontecerá.
+                        else if (pilha.top() != valor){
+                            return false;
+                        }
+                    }
+
+                // Caso a taga não possua caracter de fechamento, o valor é adicionado ao topo da pilha.
+                } else {
+                    aberta = false;
+                    pilha.push(valor);
+                    caractere = ' ';
+                    valor = "";
+                }
+            }
+
+            // Caso a tag esteja aberta, soma o caractere a string
+            if (aberta) {
+                // Caso a tag possua caractere de fechamento
+                if (caractere == '/') {
+                    fechamento = true;
+                } else {
+                    valor += caractere; 
+                }
+            }
+
+            // Verificar se é a abertura da tag
+            if (caractere == '<') {
+                aberta = true;
+            }
+        }
+
+        if (pilha.empty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
 }
 
 std::string extractDado(const std::string& file, std::size_t pos_cenario, const std::string& tag, const std::string& var) {
@@ -131,14 +205,19 @@ int** matrizGerador(const std::string& matriz_string, int altura, int largura, b
 }
 
 int main() {
-    std::ifstream arquivo("cenarios1.xml");
+    
+    std::string xmlfilename;
+
+    std::cin >> xmlfilename;  // entrada
+    
+
+    std::ifstream arquivo(xmlfilename);
     std::ostringstream ss;
     ss << arquivo.rdbuf();
     std::string file = ss.str();
 
-    bool valido = validacaoArquivo(file);
-
-    if (!valido) {
+    
+    if (!validar(xmlfilename)) {
         std::cout << "erro" << std::endl;
         return 1;
     }
