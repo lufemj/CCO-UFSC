@@ -30,11 +30,11 @@ int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largur
     if (matriz_cenario[robo_x][robo_y] == 1) {
         matriz_zero[robo_x][robo_y] = 1;
         matriz_cenario[robo_x][robo_y] = 0;
+        fila.enqueue(coord);
     } else {
         matriz_zero[robo_x][robo_y] = 0;
     }
-    //lista.push_back(coord);
-    fila.enqueue(coord);
+
 
     while(!fila.empty()) {
 
