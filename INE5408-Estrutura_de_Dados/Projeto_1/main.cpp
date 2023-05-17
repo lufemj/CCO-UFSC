@@ -166,6 +166,7 @@ bool validar(std::string nomearquivo) {
     return false;
 }
 
+// Função parametrizada que retorna a informação desejada do .xml
 std::string extractDado(const std::string& file, std::size_t pos_cenario, const std::string& tag, const std::string& var) {
     std::string dado;
     size_t startPos = file.find("<" + tag + ">", pos_cenario);
@@ -182,18 +183,22 @@ std::string extractDado(const std::string& file, std::size_t pos_cenario, const 
     return dado;
 }
 
+// Função parametrizada que retorna a matriz do cenário ou a matriz zerada
 int** matrizGerador(const std::string& matriz_string, int altura, int largura, bool zero) {
     int** matriz = new int*[altura];
     
     std::string matriz_valores = matriz_string;
     
+    // Função remove todos os caracteres contendo quebra de linha da string
     matriz_valores.erase(std::remove(matriz_valores.begin(), matriz_valores.end(), '\n'), matriz_valores.end());
 
+    // Valores da string são atribuídos a matriz
     for (int i = 0; i < altura; i++) {
         matriz[i] = new int[largura];
         for (int j = 0; j < largura; j++) {
             char valor = matriz_valores[i * largura + j];
             if (valor == '0' || valor == '1') {
+                // Dependendo da condição booleana é atribuído o valor da string ou 0
                 matriz[i][j] = zero ? 0 : valor - '0';
             }
         }
@@ -203,22 +208,25 @@ int** matrizGerador(const std::string& matriz_string, int altura, int largura, b
 
 int main() {
     
+    // Nome do arquivo é atribuído a uma string
     std::string xmlfilename;
-
-    std::cin >> xmlfilename;  // entrada
+    std::cin >> xmlfilename;  // Entrada
     
-
-    std::ifstream arquivo(xmlfilename);
-    std::ostringstream ss;
-    ss << arquivo.rdbuf();
-    std::string file = ss.str();
-
-    
+    // Chama a função que faz a validação do arquivo.xml
+    // e caso não seja válido, imprime erro 
     if (!validar(xmlfilename)) {
         std::cout << "erro" << std::endl;
         return 1;
     }
 
+    // Transforma todo o conteúdo do .xml em uma string
+    std::ifstream arquivo(xmlfilename);
+    std::ostringstream ss;
+    ss << arquivo.rdbuf();
+    std::string file = ss.str();
+
+
+    // Verifica o número de cenários no .xml
     int num_cenarios = 0;
     std::size_t init = 0;
     std::string tag = "<cenario>";
@@ -227,26 +235,33 @@ int main() {
         init += tag.length();
     }
 
+    // Realiza as operações para a quatidade de cenários obtida
     std::size_t aux = 0;
     for (int i = 0; i < num_cenarios; i++) {
         //Salva a posição inicial de cada cenário
         std::size_t startPos = file.find(tag, aux);
 
-        std::string nome = extractDado(file, startPos, "cenario", "nome");              //
-        int altura = std::stoi(extractDado(file, startPos,"dimensoes", "altura"));      // Usando a posição de cada cenário, 
-        int largura = std::stoi(extractDado(file, startPos,"dimensoes", "largura"));    // são adquiridas todas as informações
-        int robo_x = std::stoi(extractDado(file, startPos,"robo", "x"));                // necessárias e atribuidas a uma variavel
-        int robo_y = std::stoi(extractDado(file, startPos,"robo", "y"));                //
+        // Utilizando a posição de cada cenário, são adquiridas todas
+        // as informações necessárias e atribuídas a uma variável
+        std::string nome = extractDado(file, startPos, "cenario", "nome");
+        int altura = std::stoi(extractDado(file, startPos,"dimensoes", "altura")); 
+        int largura = std::stoi(extractDado(file, startPos,"dimensoes", "largura"));
+        int robo_x = std::stoi(extractDado(file, startPos,"robo", "x"));
+        int robo_y = std::stoi(extractDado(file, startPos,"robo", "y"));
 
-
+        // Utilizando os dados adquiridos são chamdas as funções que geram as matrizes
         std::string matriz_string = extractDado(file, startPos, "cenario", "matriz"); 
         int **matriz_cenario = matrizGerador(matriz_string, altura, largura, false);
         int **matriz_zero = matrizGerador(matriz_string, altura, largura, true);
 
+        // Com todas as informações adquiridas, chama a função que realiza a operação do robô
         int casasLimpas = operacaoRobo(matriz_cenario, matriz_zero, altura, largura, robo_x, robo_y);
 
+        // Imprime o resultado final da operação
         std::cout << nome << " " << casasLimpas << std::endl;
 
+        // Atualiza a variável aux para que no próximo loop 
+        // ele busque a posição do próximo cenário
         std::size_t endPos = file.find("</cenario>", aux);
         aux = endPos + 10;
     }
