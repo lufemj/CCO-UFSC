@@ -33,7 +33,6 @@ int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largur
         matriz_zero[robo_x][robo_y] = 0;
     }
 
-
     while(!fila.empty()) {
 
         // Tira o valor da primeira coordenada da fila, e atribui a uma variável;
