@@ -1,4 +1,3 @@
-// Copyright [2019] <COLOQUE SEU NOME AQUI...>
 #ifndef STRUCTURES_ARRAY_STACK_H
 #define STRUCTURES_ARRAY_STACK_H
 
@@ -69,7 +68,7 @@ structures::ArrayStack<T>::~ArrayStack() {
 template<typename T>
 void structures::ArrayStack<T>::push(const T& data) {
     if (full()) {
-        throw std::out_of_range("pilha cheia");
+        throw std::out_of_range("Pilha Cheia");
     } else {
         top_++;
         contents[top_] = data;
@@ -79,7 +78,7 @@ void structures::ArrayStack<T>::push(const T& data) {
 template<typename T>
 T structures::ArrayStack<T>::pop() {
     if (empty()) {
-        throw std::out_of_range("Pilha vazia");
+        throw std::out_of_range("Pilha Vazia");
     } else {
         T aux;
         aux = contents[top_];
@@ -91,7 +90,7 @@ T structures::ArrayStack<T>::pop() {
 template<typename T>
 T& structures::ArrayStack<T>::top() {
     if (empty()) {
-        throw std::out_of_range("Pilha vazia");
+        throw std::out_of_range("Pilha Vazia");
     } else {
         return contents[top_];
     }
