@@ -1,15 +1,13 @@
 //Alunos: Luis Fernando Mendonça Junior     22103512
 //        Isaque Floriano Beirith           22100624
 
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <vector>
 #include <algorithm>
-#include "fila.cpp"
-#include "pilha.cpp"
+#include "array_stack.h"
+#include "array_queue.h"
 
 struct Coordenadas {
     int x;
@@ -233,20 +231,17 @@ int main() {
 
     std::size_t aux = 0;
     for (int i = 0; i < num_cenarios; i++) {
+        //Salva a posição inicial de cada cenário
         std::size_t startPos = file.find(tag, aux);
-        std::size_t endPos = file.find("</cenario>", aux);
-        pos_cenarios[i] = startPos;
-        aux = endPos + 10;
-    }
 
-    for (int i = 0; i < num_cenarios; i++) {
-        std::string nome = extractDado(file, pos_cenarios[i], "cenario", "nome");
-        int altura = std::stoi(extractDado(file, pos_cenarios[i],"dimensoes", "altura"));
-        int largura = std::stoi(extractDado(file, pos_cenarios[i],"dimensoes", "largura"));
-        int robo_x = std::stoi(extractDado(file, pos_cenarios[i],"robo", "x"));
-        int robo_y = std::stoi(extractDado(file, pos_cenarios[i],"robo", "y"));
-        
-        std::string matriz_string = extractDado(file, pos_cenarios[i], "cenario", "matriz"); 
+        std::string nome = extractDado(file, startPos, "cenario", "nome");              //
+        int altura = std::stoi(extractDado(file, startPos,"dimensoes", "altura"));      // Usando a posição de cada cenário, 
+        int largura = std::stoi(extractDado(file, startPos,"dimensoes", "largura"));    // são adquiridas todas as informações
+        int robo_x = std::stoi(extractDado(file, startPos,"robo", "x"));                // necessárias e atribuidas a uma variavel
+        int robo_y = std::stoi(extractDado(file, startPos,"robo", "y"));                //
+
+
+        std::string matriz_string = extractDado(file, startPos, "cenario", "matriz"); 
         int **matriz_cenario = matrizGerador(matriz_string, altura, largura, false);
         int **matriz_zero = matrizGerador(matriz_string, altura, largura, true);
 
@@ -254,6 +249,8 @@ int main() {
 
         std::cout << nome << " " << casasLimpas << std::endl;
 
+        std::size_t endPos = file.find("</cenario>", aux);
+        aux = endPos + 10;
     }
     return 0;
 }
