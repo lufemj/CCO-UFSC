@@ -227,8 +227,6 @@ int main() {
         init += tag.length();
     }
 
-    std::size_t* pos_cenarios = new std::size_t[num_cenarios];
-
     std::size_t aux = 0;
     for (int i = 0; i < num_cenarios; i++) {
         //Salva a posição inicial de cada cenário
