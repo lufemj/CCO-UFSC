@@ -89,7 +89,7 @@ int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largur
     return casasLimpas;
 }
 
-bool validar(std::string nomearquivo) {
+bool validarXML(std::string nomearquivo) {
 
     char caractere;
     bool aberta = false;
@@ -213,7 +213,7 @@ int main() {
     
     // Chama a função que faz a validação do arquivo.xml
     // e caso não seja válido, imprime erro 
-    if (!validar(xmlfilename)) {
+    if (!validarXML(xmlfilename)) {
         std::cout << "erro" << std::endl;
         return 1;
     }
