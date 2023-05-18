@@ -216,18 +216,18 @@ int main() {
 
     // Transforma todo o conteúdo do .xml em uma string
     std::ifstream arquivo(xmlfilename);
-    std::ostringstream ss;
-    ss << arquivo.rdbuf();
-    std::string file = ss.str();
+    std::ostringstream saved_string;
+    saved_string << arquivo.rdbuf();
+    std::string file = saved_string.str();
 
 
     // Verifica o número de cenários no .xml
     int num_cenarios = 0;
-    std::size_t init = 0;
+    std::size_t pos = 0;
     std::string tag = "<cenario>";
-    while ((init = file.find(tag, init)) != std::string::npos) {
+    while ((pos = file.find(tag, pos)) != std::string::npos) {
         num_cenarios++;
-        init += tag.length();
+        pos += tag.length();
     }
 
     // Realiza as operações para a quatidade de cenários obtida
