@@ -12,7 +12,6 @@
 struct Coordenadas {
     int x;
     int y;
-
 };
 
 int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largura, int robo_x, int robo_y) {
@@ -29,6 +28,7 @@ int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largur
     } else {
         matriz_zero[robo_x][robo_y] = 0;
     }
+
 
     while(!fila.empty()) {
 
@@ -86,7 +86,7 @@ int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largur
     return casasLimpas;
 }
 
-bool validarXML(std::string nomearquivo) {
+bool validar(std::string nomearquivo) {
 
     char caractere;
     bool aberta = false;
@@ -182,6 +182,7 @@ std::string extractDado(const std::string& file, std::size_t pos_cenario, const 
 // Função parametrizada que retorna a matriz do cenário ou a matriz zerada
 int** matrizGerador(const std::string& matriz_string, int altura, int largura, bool zero) {
     int** matriz = new int*[altura];
+    
     std::string matriz_valores = matriz_string;
     
     // Função remove todos os caracteres contendo quebra de linha da string
@@ -192,10 +193,9 @@ int** matrizGerador(const std::string& matriz_string, int altura, int largura, b
         matriz[i] = new int[largura];
         for (int j = 0; j < largura; j++) {
             char valor = matriz_valores[i * largura + j];
-            if (valor == '0' || valor == '1') {
-                // Dependendo da condição booleana é atribuído o valor da string ou 0
-                matriz[i][j] = zero ? 0 : valor - '0';
-            }
+            // Dependendo da condição booleana é atribuído o valor da string ou 0
+            matriz[i][j] = zero ? 0 : valor - '0';
+            
         }
     }
     return matriz;
@@ -209,7 +209,7 @@ int main() {
     
     // Chama a função que faz a validação do arquivo.xml
     // e caso não seja válido, imprime erro 
-    if (!validarXML(xmlfilename)) {
+    if (!validar(xmlfilename)) {
         std::cout << "erro" << std::endl;
         return 1;
     }
