@@ -12,10 +12,7 @@
 struct Coordenadas {
     int x;
     int y;
-    
-    bool operator==(const Coordenadas& other) const {
-        return x == other.x && y == other.y;
-    }
+
 };
 
 int operacaoRobo(int** matriz_cenario, int** matriz_zero, int altura, int largura, int robo_x, int robo_y) {
@@ -185,7 +182,6 @@ std::string extractDado(const std::string& file, std::size_t pos_cenario, const 
 // Função parametrizada que retorna a matriz do cenário ou a matriz zerada
 int** matrizGerador(const std::string& matriz_string, int altura, int largura, bool zero) {
     int** matriz = new int*[altura];
-    
     std::string matriz_valores = matriz_string;
     
     // Função remove todos os caracteres contendo quebra de linha da string
