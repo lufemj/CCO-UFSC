@@ -8,7 +8,7 @@ endif
 LFLAGS=
 OUTPUT=program
 LIBS=-lm
-CC=/usr/local/opt/llvm/bin/clang
+
 # Essas duas coisas servem pra mapear quais arquivos .c dependem de 
 # quais arquivos .h. Lembre-se que se o .h muda, todo .c que inclui 
 # ele precisa ser compilado novamente. Esse makefile usa features 
