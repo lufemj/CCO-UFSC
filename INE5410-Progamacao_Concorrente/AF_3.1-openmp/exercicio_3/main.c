@@ -5,11 +5,13 @@
 
 double standard_deviation(double* data, int size) {
     double avg = 0;
+    #pragma omp parallel for reduction(+:avg)
     for (int i = 0; i < size; ++i) 
         avg += data[i];
     avg /= size;
 
     double sd = 0;
+    #pragma omp parallel for reduction(+:sd)
     for (int i = 0; i < size; ++i) 
         sd += pow(data[i] - avg, 2);
     sd = sqrt(sd / (size-1));
