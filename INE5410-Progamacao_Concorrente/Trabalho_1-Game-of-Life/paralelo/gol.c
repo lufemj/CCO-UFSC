@@ -53,21 +53,12 @@ int adjacent_to(cell_t *board, int size, int i, int j)
     return count;
 }
 
-stats_t play(cell_t *board, cell_t *newboard, int size, int start, int end)
+stats_t play(cell_t *board, cell_t *newboard, int size)
 {
     int index, a;
     stats_t stats = {0, 0, 0, 0};
 
-    int start_i = start / size;
-    int start_j = start % size;
-
-    int end_i = end / size;
-    int end_j = end % size;
-
-    int start_index = start_i * size + start_j;
-    int end_index = end_i * size + end_j;
-
-    for (index = start_index; index <= end_index; index++)
+    for (index = 0; index < size * size; index++)
     {
         int i = index / size;
         int j = index % size;
