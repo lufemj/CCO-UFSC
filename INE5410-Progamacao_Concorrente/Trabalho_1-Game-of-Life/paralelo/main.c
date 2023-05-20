@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < steps; i++)
     {
-        stats_step = play(prev, next, size);
+        stats_step = play(prev, next, size, 0, 120);
         
         stats_total.borns += stats_step.borns;
         stats_total.survivals += stats_step.survivals;

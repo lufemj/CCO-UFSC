@@ -34,7 +34,7 @@ void free_board(cell_t * board, int size);
 int adjacent_to(cell_t * board, int size, int i, int j);
 
 /* Compute the next generation (newboard) based on the current generation (board) and returns its statistics */
-stats_t play(cell_t * board, cell_t * newboard, int size);
+stats_t play(cell_t * board, cell_t * newboard, int size, int start, int end);
 
 /* Print the GoL board */
 void print_board(cell_t * board, int size);
