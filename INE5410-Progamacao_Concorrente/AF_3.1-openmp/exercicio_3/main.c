@@ -2,6 +2,7 @@
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
+#include <omp.h>
 
 double standard_deviation(double* data, int size) {
     double avg = 0;
