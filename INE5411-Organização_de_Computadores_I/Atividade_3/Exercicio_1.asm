@@ -27,7 +27,7 @@ LOOP_COLUNA:
 	add $t3, $t3, $t4		#Soma esse dois valores e armazena o resultado em $t3
 	add $t4, $t3, $s0		#Por fim, soma o resultado ao endereço da matriz para obter a posição atual da matriz
 	
-	sw $s1, 0($t4)			#Armazena o valor atual na posição correta da matriz
+	sw $s1, ($t4)			#Armazena o valor atual na posição correta da matriz
 	addi $s1, $s1, 1		#Soma mais um no valor a ser armazenado
 	
 	addi	$t1, $t1, 1		#Soma 1 no valor da coluna
