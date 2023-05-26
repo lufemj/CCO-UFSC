@@ -14,14 +14,23 @@
  */
 
 #include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
 #include "gol.h"
 
 /* Statistics */
 stats_t statistics;
 
-cell_t *allocate_board(int size)
+// Barreiras inicilizadas como variáveis globais
+extern pthread_barrier_t barrier_steps;
+extern pthread_barrier_t barrier_board;
+
+cell_t **allocate_board(int size)
 {
-    cell_t *board = (cell_t *)malloc(sizeof(cell_t) * size * size);
+    cell_t **board = (cell_t **)malloc(sizeof(cell_t *) * size);
+    int i;
+    for (i = 0; i < size; i++)
+        board[i] = (cell_t *)malloc(sizeof(cell_t) * size);
     
     statistics.borns = 0;
     statistics.survivals = 0;
@@ -31,12 +40,15 @@ cell_t *allocate_board(int size)
     return board;
 }
 
-void free_board(cell_t *board, int size)
+void free_board(cell_t **board, int size)
 {
+    int i;
+    for (i = 0; i < size; i++)
+        free(board[i]);
     free(board);
 }
 
-int adjacent_to(cell_t *board, int size, int i, int j)
+int adjacent_to(cell_t **board, int size, int i, int j)
 {
     int k, l, count = 0;
 
@@ -47,60 +59,90 @@ int adjacent_to(cell_t *board, int size, int i, int j)
 
     for (k = sk; k <= ek; k++)
         for (l = sl; l <= el; l++)
-            count += board[k*size + l];
-    count -= board[i*size + j];
+            count += board[k][l];
+    count -= board[i][j];
 
     return count;
 }
 
-stats_t play(cell_t *board, cell_t *newboard, int size)
+void *play(void *args)
 {
-    int index, a;
-    stats_t stats = {0, 0, 0, 0};
+    // Converte o ponteiro args para o tipo arguments_t
+    arguments_t *p = (arguments_t *) args;
 
-    for (index = 0; index < size * size; index++)
+    // Atribui os valores da estrutura a suas variaveis
+    int size = p->size;
+    int steps = p->steps;
+    int start = p->start;
+    int end = p->end;
+    int id = p->id;
+
+    // Obtém as matrizes de células (tabuleiro) a partir dos campos prev e next
+    cell_t ***board = p->prev;
+    cell_t ***newboard = p->next;
+
+    // Obtém o ponteiro para a estrutura de estatísticas stats_t
+    stats_t *stats = &(p->stats);
+
+    for (int s = 0; s < steps; ++s)
     {
-        int i = index / size;
-        int j = index % size;
-
-        a = adjacent_to(board, size, i, j);
-
-        if (board[index])
+        for (int i = start; i < end; ++i)
         {
-            if (a < 2)
-            {
-                newboard[index] = 0;
-                stats.loneliness++;
-            }
-            else if (a == 2 || a == 3)
-            {
-                newboard[index] = board[index];
-                stats.survivals++;
-            }
-            else if (a > 3)
-            {
-                newboard[index] = 0;
-                stats.overcrowding++;
+            // A divisão inteira de i pelo size da matriz resulta no valor da linha
+            // O resto da divisão de i pelo size da matriz resulta no valor da coluna
+            int row = i / size; 
+            int col = i % size;
+
+            int a = adjacent_to((*board), size, row, col);
+
+            /* if cell is alive */
+            if((*board)[row][col]) {
+                /* death: loneliness */
+                if(a < 2) {
+                    (*newboard)[row][col] = 0;
+                    stats->loneliness++;
+                } else {
+                    /* survival */
+                    if(a == 2 || a == 3) {
+                        (*newboard)[row][col] = (*board)[row][col];
+                        stats->survivals++;
+                    } else {
+                        /* death: overcrowding */
+                        if(a > 3) {
+                            (*newboard)[row][col] = 0;
+                            stats->overcrowding++;
+                        }
+                    }
+                }
+            } else { /* if cell is dead */ 
+                if(a == 3) { /* new born */
+                    (*newboard)[row][col] = 1;
+                    stats->borns++;
+                } else {
+                    (*newboard)[row][col] = (*board)[row][col];
+                } /* stay unchanged */
             }
         }
-        else
+
+        // Barreira para que as threads esperem que todas terminem
+        pthread_barrier_wait(&barrier_steps);
+
+        // Caso seja a primeira thread, o tabuleiro é alterado por ela
+        if (id == 0)
         {
-            if (a == 3)
-            {
-                newboard[index] = 1;
-                stats.borns++;
-            }
-            else
-            {
-                newboard[index] = board[index];
-            }
+            cell_t **tmp = (*board);
+            (*board) = (*newboard);
+            (*newboard) = tmp;
         }
+
+        // Barreira para que as threads que não sejam a primeira aguardem a operação de troca de tabuleiro
+        pthread_barrier_wait(&barrier_board);
     }
 
-    return stats;
+    return NULL;
 }
 
-void print_board(cell_t *board, int size)
+void print_board(cell_t **board, int size)
 {
     int i, j;
     /* for each row */
@@ -108,7 +150,7 @@ void print_board(cell_t *board, int size)
     {
         /* print each column position... */
         for (i = 0; i < size; i++)
-            printf("%c", board[i*size + j] ? 'x' : ' ');
+            printf("%c", board[i][j] ? 'x' : ' ');
         /* followed by a carriage return */
         printf("\n");
     }
@@ -121,7 +163,7 @@ void print_stats(stats_t stats)
         stats.borns, stats.survivals, stats.loneliness, stats.overcrowding);
 }
 
-void read_file(FILE *f, cell_t *board, int size)
+void read_file(FILE *f, cell_t **board, int size)
 {
     char *s = (char *) malloc(size + 10);
 
@@ -136,7 +178,7 @@ void read_file(FILE *f, cell_t *board, int size)
 
         /* copy the string to the life board */
         for (int i = 0; i < size; i++)
-            board[i*size + j] = (s[i] == 'x');
+            board[i][j] = (s[i] == 'x');
     }
 
     free(s);
