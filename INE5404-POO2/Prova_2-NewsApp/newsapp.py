@@ -1,5 +1,3 @@
-#Aluno: Luis Fernando Mendonça Junior    Matricula:22103512
-
 import io, webbrowser, requests, json
 from tkinter import *
 import tkinter as tk

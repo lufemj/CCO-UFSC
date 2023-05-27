@@ -1,12 +1,10 @@
 from classes import *
 
-
 livros = []
 clientes = []
 vendidos = []
 
-#Aluno: Luis Fernando Mendonça Junior 22103512
-#Usado para testar com mais eficiencia
+#DEBUG
 '''
 livro = Livro('1', 'Narnia', 'Aventura', 364)
 cliente = Pessoa('Luis','Pessoa','123','(48)9234','Rua Laranja')
