@@ -12,7 +12,7 @@ MAIN:
 	mul	$t1, $t0, $t0		#Define o número de elementos das matrizes
 	mul	$t1, $t1, 4		#Define o tamanho de 4 bytes para as matrizes
 	
-	li	$v0, 9			#Código 9 Ã© utilizado para alocar memóira
+	li	$v0, 9			#Código 9 utilizado para alocar memóira
 	move	$a0, $t1		#Passa o tamanho da matriz em bytes
 	syscall
 	move	$s0, $v0		#Armazena o endereço da matriz A retornado
