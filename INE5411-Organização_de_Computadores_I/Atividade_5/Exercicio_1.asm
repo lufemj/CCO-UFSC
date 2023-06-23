@@ -1,4 +1,4 @@
-#Alunos: Luis Fernando MendonÃ§a Junior	Matricula: 22103512
+#Alunos: Luis Fernando Mendonça Junior	Matricula: 22103512
 #	Isaque Floriano Beirith		Matricula: 22100624
 #Atividade 5	Exercício 1
 
