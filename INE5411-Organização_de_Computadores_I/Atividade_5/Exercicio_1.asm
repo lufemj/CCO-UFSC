@@ -48,10 +48,11 @@ LOOP_COLUNA:
 	mul	$t3, $t3, 4		#Multiplica esse valor por 4 para encontrar a posição no endereço
 	add 	$t3, $t3, $s1		#Soma a posição encontrada com o endereço da matriz B
 	
-	l.s	$f0, 0($t2)		#Carrega o valor da posição atual da matriz A
-	l.s	$f1, 0($t3)		#Carrega o valor da posição atual da matriz B
+	#Opera��o e armazenamento
+	l.s	$f0, ($t2)		#Carrega o valor da posição atual da matriz A
+	l.s	$f1, ($t3)		#Carrega o valor da posição atual da matriz B
 	add.s	$f2, $f0, $f1		#Soma esses dois elementos
-	s.s	$f2, 0($t2)		#Armazena o resultado na matriz A
+	s.s	$f2, ($t2)		#Armazena o resultado na matriz A
 	
 	addi	$t1, $t1, 1		#Soma 1 no valor da coluna
 	j	LOOP_COLUNA		#Volta para o loop da coluna

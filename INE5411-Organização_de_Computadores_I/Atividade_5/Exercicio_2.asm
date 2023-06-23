@@ -4,63 +4,80 @@
 
 .data
 	.eqv 	MAX 4			#Tamanaho das matrizes
-	.eqv 	block_size
-
+	.eqv 	block_size 4		#Tamanho dos blocos
 .text
 MAIN:
-
 	li	$t0, MAX		#Carrega o valor do tamanaho das linhas e colunas
 	
-	mul	$t1, $t0, $t0		#Define o n√∫mero de elementos das matrizes
+	mul	$t1, $t0, $t0		#Define o n˙mero de elementos das matrizes
 	mul	$t1, $t1, 4		#Define o tamanho de 4 bytes para as matrizes
 	
-	
-	li	$v0, 9			#C√≥digo 9 √© utilizado para alocar mem√≥ira
+	li	$v0, 9			#CÛdigo 9 √© utilizado para alocar memÛira
 	move	$a0, $t1		#Passa o tamanho da matriz em bytes
 	syscall
-	move	$s0, $v0		#Armazena o endere√ßo da matriz A retornado
+	move	$s0, $v0		#Armazena o endereÁo da matriz A retornado
 
-	li	$v0, 9			#C√≥digo 9 √© utilizado para alocar mem√≥ira
+	li	$v0, 9			#CÛdigo 9 utilizado para alocar memÛira
 	move	$a0, $t1		#Passa o tamanho da matriz em bytes
 	syscall
-	move	$s1, $v0		#Armazena o endere√ßo da matriz B retornado
+	move	$s1, $v0		#Armazena o endereÁo da matriz B retornado
 	
-	li	$t0, 0			#Define o valor da linha
-	li	$t1, 0			#Define o valor da coluna
+	li	$t0, 0			#Define o valor de i
+	li	$t1, 0			#Define o valor de j
+	li	$t2, 0			#Define o valor de ii
+	li	$t3, 0			#Define o valor de jj
 	
-	j	LOOP_COLUNA		#Inicia o Loop
-	
-LOOP_LINHA:
-	addi	$t0, $t0, 1		#Soma 1 no valor da linha
-	beq	$t0, MAX, END		#Se finalizar a utlima linha vai para o fim do programa
+LOOP_I:
+	bge	$t0, MAX, END_I		#Se o valor de i for igual ao numero m·ximo de linhas chama o fim da linha
+	li	$t1, 0			#Reseta o valor da coluna
 
-LOOP_COLUNA:
-	beq	$t1, MAX, RESET_COLUNA	#Se finalizar a utlima coluna vai chama a fun√ß√£o para resetar o valor
+LOOP_J:
+	beq	$t1, MAX, END_J		#Se o valor de j for igual ao numero m·ximo de colunas chama o fim da coluna
+	move	$t2, $t0		#Reseta o sub-bloco da linha
+
+LOOP_II:
+	add	$t4, $t0, block_size	#Soma o valor da linha com o tamanho do bloco
+	bge	$t2, $t4, END_II	#Se o sub-bloco ii for maior que o resultado da soma chama o fim do sub-bloco ii
+	move	$t3, $t1		#Reseta o valor do sub-bloco jj
+	
+LOOP_JJ:
+	add	$t5, $t1, block_size	#Soma o valor da coluna com o tamanho do bloco
+	bge	$t3, $t5, END_JJ	#Se o sub-bloco jj for maior que o resultado da soma chama o fim do sub-bloco jj
 	
 	#Deslocamento da matriz A
-	mul	$t2, $t0, MAX		#Multiplica o valor da linha pelo tamanho m√°ximo dela
-	add	$t2, $t2, $t1		#Adiciona o resultado anterior com o valor da coluna
-	mul	$t2, $t2, 4		#Multiplica esse valor por 4 para encontrar a posi√ß√£o no endere√ßo
-	add 	$t2, $t2,$s0		#Soma a posi√ß√£o encontrada com o endere√ßo da matriz A
+	mul	$t6, $t2, MAX		#Multiplica o valor do sub-bloco ii pelo tamanho m·ximo dela
+	add	$t6, $t6, $t3		#Adiciona o resultado anterior com o valor do sub-bloco jj
+	mul	$t6, $t6, 4		#Multiplica esse valor por 4 para encontrar a posiÁ„o no endereÁo
+	add 	$t6, $t6,$s0		#Soma a posiÁ„o encontrada com o endereÁo da matriz A
 	
 	#Deslocamento da matriz B
-	mul	$t3, $t1, MAX		#Multiplica o valor da coluna pelo tamanho m√°ximo dela
-	add	$t3, $t3, $t0		#Adiciona o resultado anterior com o valor da linha
-	mul	$t3, $t3, 4		#Multiplica esse valor por 4 para encontrar a posi√ß√£o no endere√ßo
-	add 	$t3, $t3, $s1		#Soma a posi√ß√£o encontrada com o endere√ßo da matriz B
-	
-	l.s	$f0, 0($t2)		#Carrega o valor da posi√ß√£o atual da matriz A
-	l.s	$f1, 0($t3)		#Carrega o valor da posi√ß√£o atual da matriz B
+	mul	$t7, $t3, MAX		#Multiplica o valor do sub-bloco jj pelo tamanho m·ximo dela
+	add	$t7, $t7, $t2		#Adiciona o resultado anterior com o valor do sub-bloco ii
+	mul	$t7, $t7, 4		#Multiplica esse valor por 4 para encontrar a posiÁ„o no endereÁo
+	add 	$t7, $t7, $s1		#Soma a posiÁ„o encontrada com o endereÁo da matriz B
+		
+	#OperaÁ„o e armazenamento
+	l.s	$f0, ($t6)		#Carrega o valor da posiÁ„o atual da matriz A
+	l.s	$f1, ($t7)		#Carrega o valor da posiÁ„o atual da matriz B
 	add.s	$f2, $f0, $f1		#Soma esses dois elementos
-	s.s	$f2, 0($t2)		#Armazena o resultado na matriz A
+	s.s	$f2, ($t6)		#Armazena o resultado na matriz A
 	
-	addi	$t1, $t1, 1		#Soma 1 no valor da coluna
-	j	LOOP_COLUNA		#Volta para o loop da coluna
+	addi	$t3, $t3, 1		#Soma 1 no valor do sub-bloco jj
+	j	LOOP_JJ			#Volta para o loop do sub-bloco jj
 	
-RESET_COLUNA:
-	li	$t1, 0			#Reseta o valor da coluna
-	j	LOOP_LINHA		#Ap√≥s resetar o valor da coluna ele chama a fun√ß√£o para pr√≥xima linha
+END_JJ:
+	addi	$t2, $t2, 1		#Soma 1 no valor do sub-bloco ii
+	j	LOOP_II			#Volta para o loop do sub-bloco ii
+
+END_II:
+	addi	$t1, $t1, block_size	#Soma o tamanho do bloco com o valor da coluna
+	j	LOOP_J			#Volta para o loop da coluna
 	
-END:
+END_J:
+	addi	$t0, $t0, block_size	#Soma o tamanho do bloco com o valor da linha
+	j	LOOP_I			#Volta para o loop da linha
+	
+END_I:
 	li $v0, 10 			#Chamada do sistema para sair
 	syscall
+	
