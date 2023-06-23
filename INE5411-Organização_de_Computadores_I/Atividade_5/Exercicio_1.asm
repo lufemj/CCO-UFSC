@@ -10,16 +10,16 @@ MAIN:
 
 	li	$t0, MAX		#Carrega o valor do tamanaho das linhas e colunas
 	
-	mul	$t1, $t0, $t0		#Define o n√∫mero de elementos das matrizes
+	mul	$t1, $t0, $t0		#Define o n˙mero de elementos das matrizes
 	mul	$t1, $t1, 4		#Define o tamanho de 4 bytes para as matrizes
 	
 	
-	li	$v0, 9			#C√≥digo 9 √© utilizado para alocar mem√≥ira
+	li	$v0, 9			#CÛdigo 9 utilizado para alocar memÛira
 	move	$a0, $t1		#Passa o tamanho da matriz em bytes
 	syscall
 	move	$s0, $v0		#Armazena o endere√ßo da matriz A retornado
 
-	li	$v0, 9			#C√≥digo 9 √© utilizado para alocar mem√≥ira
+	li	$v0, 9			#CÛdigo 9 utilizado para alocar memÛira
 	move	$a0, $t1		#Passa o tamanho da matriz em bytes
 	syscall
 	move	$s1, $v0		#Armazena o endere√ßo da matriz B retornado
@@ -37,20 +37,20 @@ LOOP_COLUNA:
 	beq	$t1, MAX, RESET_COLUNA	#Se finalizar a utlima coluna vai chama a fun√ß√£o para resetar o valor
 	
 	#Deslocamento da matriz A
-	mul	$t2, $t0, MAX		#Multiplica o valor da linha pelo tamanho m√°ximo dela
+	mul	$t2, $t0, MAX		#Multiplica o valor da linha pelo tamanho m·ximo dela
 	add	$t2, $t2, $t1		#Adiciona o resultado anterior com o valor da coluna
 	mul	$t2, $t2, 4		#Multiplica esse valor por 4 para encontrar a posi√ß√£o no endere√ßo
 	add 	$t2, $t2,$s0		#Soma a posi√ß√£o encontrada com o endere√ßo da matriz A
 	
 	#Deslocamento da matriz B
-	mul	$t3, $t1, MAX		#Multiplica o valor da coluna pelo tamanho m√°ximo dela
+	mul	$t3, $t1, MAX		#Multiplica o valor da coluna pelo tamanho m·ximo dela
 	add	$t3, $t3, $t0		#Adiciona o resultado anterior com o valor da linha
-	mul	$t3, $t3, 4		#Multiplica esse valor por 4 para encontrar a posi√ß√£o no endere√ßo
-	add 	$t3, $t3, $s1		#Soma a posi√ß√£o encontrada com o endere√ßo da matriz B
+	mul	$t3, $t3, 4		#Multiplica esse valor por 4 para encontrar a posiÁ„o no endere√ßo
+	add 	$t3, $t3, $s1		#Soma a posiÁ„o encontrada com o endere√ßo da matriz B
 	
 	#OperaÁ„o e armazenamento
-	l.s	$f0, ($t2)		#Carrega o valor da posi√ß√£o atual da matriz A
-	l.s	$f1, ($t3)		#Carrega o valor da posi√ß√£o atual da matriz B
+	l.s	$f0, ($t2)		#Carrega o valor da posiÁ„o atual da matriz A
+	l.s	$f1, ($t3)		#Carrega o valor da posiÁ„o atual da matriz B
 	add.s	$f2, $f0, $f1		#Soma esses dois elementos
 	s.s	$f2, ($t2)		#Armazena o resultado na matriz A
 	
@@ -59,7 +59,7 @@ LOOP_COLUNA:
 	
 RESET_COLUNA:
 	li	$t1, 0			#Reseta o valor da coluna
-	j	LOOP_LINHA		#Ap√≥s resetar o valor da coluna ele chama a fun√ß√£o para pr√≥xima linha
+	j	LOOP_LINHA		#ApÛs resetar o valor da coluna ele chama a funÁ„o para prÛxima linha
 	
 END:
 	li $v0, 10 			#Chamada do sistema para sair
