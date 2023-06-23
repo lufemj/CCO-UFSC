@@ -1,6 +1,6 @@
 #Alunos: Luis Fernando Mendonça Junior	Matricula: 22103512
 #	Isaque Floriano Beirith		Matricula: 22100624
-#Atividade 5	Exercício 2
+#Atividade 5	Exerc�cio 1 2
 
 .data
 	.eqv 	MAX 4			#Tamanaho das matrizes
