@@ -1,9 +1,17 @@
 #include <iostream>
+#include <fstream>
+#include <omp.h>
+using namespace std;
+
+NoTrie {
+    char           letra;        //opcional
+    NoTrie        *filhos[26];   //pode ser uma 'LinkedList' de ponteiros
+    unsigned long  posição;
+    unsigned long  comprimento;  //se maior que zero, indica último caracter de uma palavra
+}
+
 
 int main() {
-    
-    using namespace std;
-
     string filename;
     string word;
 
