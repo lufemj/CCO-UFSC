@@ -1,26 +1,26 @@
-#Alunos: Luis Fernando Mendonça Junior	Matricula: 22103512
+#Alunos: Luis Fernando Mendonï¿½a Junior	Matricula: 22103512
 #	Isaque Floriano Beirith		Matricula: 22100624
-#Atividade 5	Exercício 2
+#Atividade 5	Exercï¿½cio 2
 
 .data
-	.eqv 	MAX 4			#Tamanaho das matrizes
+	.eqv 	MAX 8			#Tamanaho das matrizes
 	.eqv 	block_size 4		#Tamanho dos blocos
 .text
 MAIN:
 	li	$t0, MAX		#Carrega o valor do tamanaho das linhas e colunas
 	
-	mul	$t1, $t0, $t0		#Define o número de elementos das matrizes
+	mul	$t1, $t0, $t0		#Define o nï¿½mero de elementos das matrizes
 	mul	$t1, $t1, 4		#Define o tamanho de 4 bytes para as matrizes
 	
-	li	$v0, 9			#Código 9 utilizado para alocar memóira
+	li	$v0, 9			#Cï¿½digo 9 utilizado para alocar memï¿½ira
 	move	$a0, $t1		#Passa o tamanho da matriz em bytes
 	syscall
-	move	$s0, $v0		#Armazena o endereço da matriz A retornado
+	move	$s0, $v0		#Armazena o endereï¿½o da matriz A retornado
 
-	li	$v0, 9			#Código 9 utilizado para alocar memóira
+	li	$v0, 9			#Cï¿½digo 9 utilizado para alocar memï¿½ira
 	move	$a0, $t1		#Passa o tamanho da matriz em bytes
 	syscall
-	move	$s1, $v0		#Armazena o endereço da matriz B retornado
+	move	$s1, $v0		#Armazena o endereï¿½o da matriz B retornado
 	
 	li	$t0, 0			#Define o valor de i
 	li	$t1, 0			#Define o valor de j
@@ -28,11 +28,11 @@ MAIN:
 	li	$t3, 0			#Define o valor de jj
 	
 LOOP_I:
-	bge	$t0, MAX, END_I		#Se o valor de i for igual ao numero máximo de linhas chama o fim da linha
+	bge	$t0, MAX, END_I		#Se o valor de i for igual ao numero mï¿½ximo de linhas chama o fim da linha
 	li	$t1, 0			#Reseta o valor da coluna
 
 LOOP_J:
-	beq	$t1, MAX, END_J		#Se o valor de j for igual ao numero máximo de colunas chama o fim da coluna
+	beq	$t1, MAX, END_J		#Se o valor de j for igual ao numero mï¿½ximo de colunas chama o fim da coluna
 	move	$t2, $t0		#Reseta o sub-bloco da linha
 
 LOOP_II:
@@ -45,20 +45,20 @@ LOOP_JJ:
 	bge	$t3, $t5, END_JJ	#Se o sub-bloco jj for maior que o resultado da soma chama o fim do sub-bloco jj
 	
 	#Deslocamento da matriz A
-	mul	$t6, $t2, MAX		#Multiplica o valor do sub-bloco ii pelo tamanho máximo dela
+	mul	$t6, $t2, MAX		#Multiplica o valor do sub-bloco ii pelo tamanho mï¿½ximo dela
 	add	$t6, $t6, $t3		#Adiciona o resultado anterior com o valor do sub-bloco jj
-	mul	$t6, $t6, 4		#Multiplica esse valor por 4 para encontrar a posição no endereço
-	add 	$t6, $t6,$s0		#Soma a posição encontrada com o endereço da matriz A
+	mul	$t6, $t6, 4		#Multiplica esse valor por 4 para encontrar a posiï¿½ï¿½o no endereï¿½o
+	add 	$t6, $t6,$s0		#Soma a posiï¿½ï¿½o encontrada com o endereï¿½o da matriz A
 	
 	#Deslocamento da matriz B
-	mul	$t7, $t3, MAX		#Multiplica o valor do sub-bloco jj pelo tamanho máximo dela
+	mul	$t7, $t3, MAX		#Multiplica o valor do sub-bloco jj pelo tamanho mï¿½ximo dela
 	add	$t7, $t7, $t2		#Adiciona o resultado anterior com o valor do sub-bloco ii
-	mul	$t7, $t7, 4		#Multiplica esse valor por 4 para encontrar a posição no endereço
-	add 	$t7, $t7, $s1		#Soma a posição encontrada com o endereço da matriz B
+	mul	$t7, $t7, 4		#Multiplica esse valor por 4 para encontrar a posiï¿½ï¿½o no endereï¿½o
+	add 	$t7, $t7, $s1		#Soma a posiï¿½ï¿½o encontrada com o endereï¿½o da matriz B
 		
-	#Operação e armazenamento
-	l.s	$f0, ($t6)		#Carrega o valor da posição atual da matriz A
-	l.s	$f1, ($t7)		#Carrega o valor da posição atual da matriz B
+	#Operaï¿½ï¿½o e armazenamento
+	l.s	$f0, ($t6)		#Carrega o valor da posiï¿½ï¿½o atual da matriz A
+	l.s	$f1, ($t7)		#Carrega o valor da posiï¿½ï¿½o atual da matriz B
 	add.s	$f2, $f0, $f1		#Soma esses dois elementos
 	s.s	$f2, ($t6)		#Armazena o resultado na matriz A
 	
