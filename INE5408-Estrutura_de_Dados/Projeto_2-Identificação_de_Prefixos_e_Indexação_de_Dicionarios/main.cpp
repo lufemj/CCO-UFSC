@@ -5,8 +5,6 @@
 
 using namespace std;
 
-std::vector<std::string> dictionary;
-
 class TrieNode {
     char letra;        
     TrieNode *filhos[26];
@@ -33,8 +31,10 @@ class TrieNode {
         int i = c - 'a';
         if (filhos[i] == NULL) {
             filhos[i] = new TrieNode(c);
-            filhos[i]->posicao = posicao;
-            filhos[i]->comprimento = comprimento;
+            if (palavra.length() == 1) {
+                filhos[i]->posicao = posicao;
+                filhos[i]->comprimento = comprimento;
+            }
         }
         filhos[i]->insert_(palavra.substr(1), posicao, comprimento);
         filhos[i]->prefixos++;
@@ -98,7 +98,6 @@ void extractDado(std::string filename, TrieNode* raiz) {
         word = line.substr(startPos + 1, endPos - startPos - 1);
         raiz->insert_(word, Pos, line.length());
         Pos = Pos + line.length() + 1;
-        dictionary.push_back(word)
     }
     arquivo.close();
 }
@@ -109,12 +108,12 @@ int main() {
     std::string filename;
     std::string word;
 
-    std::cin >> filename;  // entrada
-    //filename = 'dicionario1.dic'
+    std::cin >> filename;  
+
 
     extractDado(filename, raiz);
 
-    while (1) {  // leitura das palavras ate' encontrar "0"
+    while (1) { 
         cin >> word;
         bool dict = false;
         if (word.compare("0") == 0) {
@@ -124,17 +123,11 @@ int main() {
         unsigned long posicao = raiz->retornaPos(word);
         unsigned long comprimento = raiz->retornaComp(word);
         
-        for (int i = 0; i < dictionary.size(); i++) {
-            if (word == dictionary[i]) {
-                dict = true;
-            }
-        }
-
         if (!prefixos) {
             cout << word << " is not prefix" << endl;
         } else {
             cout << word << " is prefix of " << prefixos << " words" << endl;
-            if (dict){
+            if (comprimento){
                 cout << word << " is at (" << posicao << "," << comprimento << ")" << endl;
             }
         }
@@ -142,4 +135,3 @@ int main() {
 
     return 0;
 }
-
