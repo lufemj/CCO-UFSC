@@ -1,3 +1,6 @@
+//Alunos: Luis Fernando Mendonça Junior     22103512
+//        Isaque Floriano Beirith           22100624
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -115,7 +118,6 @@ int main() {
 
     while (1) { 
         cin >> word;
-        bool dict = false;
         if (word.compare("0") == 0) {
             break;
         }
