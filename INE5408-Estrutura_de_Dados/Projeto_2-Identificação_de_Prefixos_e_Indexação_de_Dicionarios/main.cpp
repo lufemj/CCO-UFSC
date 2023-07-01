@@ -4,6 +4,7 @@
 #include <vector>
 
 using namespace std;
+
 std::vector<std::string> dictionary;
 
 class TrieNode {
@@ -97,7 +98,7 @@ void extractDado(std::string filename, TrieNode* raiz) {
         word = line.substr(startPos + 1, endPos - startPos - 1);
         raiz->insert_(word, Pos, line.length());
         Pos = Pos + line.length() + 1;
-        dictionary.push_back(word);
+        dictionary.push_back(word)
     }
     arquivo.close();
 }
