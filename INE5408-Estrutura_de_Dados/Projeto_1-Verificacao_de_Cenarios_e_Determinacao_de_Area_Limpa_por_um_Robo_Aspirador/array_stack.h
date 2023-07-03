@@ -1,36 +1,27 @@
+// Copyright 2023 <Luis Fernando Mendonça Junior>
+
 #ifndef STRUCTURES_ARRAY_STACK_H
 #define STRUCTURES_ARRAY_STACK_H
 
 #include <cstdint>  // std::size_t
 #include <stdexcept>  // C++ exceptions
 
+
 namespace structures {
 
 template<typename T>
-//! CLASSE PILHA
 class ArrayStack {
  public:
-    //! construtor simples
     ArrayStack();
-    //! construtor com parametro tamanho
     explicit ArrayStack(std::size_t max);
-    //! destrutor
     ~ArrayStack();
-    //! metodo empilha
     void push(const T& data);
-    //! metodo desempilha
     T pop();
-    //! metodo retorna o topo
     T& top();
-    //! metodo limpa pilha
     void clear();
-    //! metodo retorna tamanho
     std::size_t size();
-    //! metodo retorna capacidade maxima
     std::size_t max_size();
-    //! verifica se esta vazia
     bool empty();
-    //! verifica se esta cheia
     bool full();
 
  private:
@@ -44,7 +35,6 @@ class ArrayStack {
 }  // namespace structures
 
 #endif
-
 
 template<typename T>
 structures::ArrayStack<T>::ArrayStack() {
@@ -68,29 +58,25 @@ structures::ArrayStack<T>::~ArrayStack() {
 template<typename T>
 void structures::ArrayStack<T>::push(const T& data) {
     if (full()) {
-        throw std::out_of_range("Pilha Cheia");
+        throw std::out_of_range("pilha cheia");
     } else {
-        top_++;
-        contents[top_] = data;
+        contents[++top_] = data;
     }
 }
 
 template<typename T>
 T structures::ArrayStack<T>::pop() {
     if (empty()) {
-        throw std::out_of_range("Pilha Vazia");
+        throw std::out_of_range("pilha vazia");
     } else {
-        T aux;
-        aux = contents[top_];
-        top_--;
-        return aux;
+        return contents[top_--];
     }
 }
 
 template<typename T>
 T& structures::ArrayStack<T>::top() {
     if (empty()) {
-        throw std::out_of_range("Pilha Vazia");
+        throw std::out_of_range("pilha vazia");
     } else {
         return contents[top_];
     }
@@ -98,7 +84,7 @@ T& structures::ArrayStack<T>::top() {
 
 template<typename T>
 void structures::ArrayStack<T>::clear() {
-    top_ = - 1;
+    top_ = -1;
 }
 
 template<typename T>
@@ -118,6 +104,5 @@ bool structures::ArrayStack<T>::empty() {
 
 template<typename T>
 bool structures::ArrayStack<T>::full() {
-    int aux = max_size();
-    return top_ == aux - 1;
+    return static_cast<std::size_t>(top_) == max_size_ - 1;
 }
