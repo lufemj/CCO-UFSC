@@ -1,5 +1,4 @@
-// Copyright 2023 <Luis Fernando Mendonça Junior>
-
+// Copyright [2019] <COLOQUE SEU NOME AQUI...>
 #ifndef STRUCTURES_ARRAY_STACK_H
 #define STRUCTURES_ARRAY_STACK_H
 
@@ -9,18 +8,30 @@
 namespace structures {
 
 template<typename T>
+//! CLASSE PILHA
 class ArrayStack {
  public:
+    //! construtor simples
     ArrayStack();
+    //! construtor com parametro tamanho
     explicit ArrayStack(std::size_t max);
+    //! destrutor
     ~ArrayStack();
+    //! metodo empilha
     void push(const T& data);
+    //! metodo desempilha
     T pop();
+    //! metodo retorna o topo
     T& top();
+    //! metodo limpa pilha
     void clear();
+    //! metodo retorna tamanho
     std::size_t size();
+    //! metodo retorna capacidade maxima
     std::size_t max_size();
+    //! verifica se esta vazia
     bool empty();
+    //! verifica se esta cheia
     bool full();
 
  private:
@@ -35,6 +46,7 @@ class ArrayStack {
 
 #endif
 
+
 template<typename T>
 structures::ArrayStack<T>::ArrayStack() {
     max_size_ = DEFAULT_SIZE;
@@ -44,9 +56,7 @@ structures::ArrayStack<T>::ArrayStack() {
 
 template<typename T>
 structures::ArrayStack<T>::ArrayStack(std::size_t max) {
-    max_size_ = max;
-    contents = new T[max_size_];
-    top_ = -1;
+    // COLOQUE SEU CODIGO AQUI...
 }
 
 template<typename T>
@@ -59,49 +69,41 @@ void structures::ArrayStack<T>::push(const T& data) {
     if (full()) {
         throw std::out_of_range("pilha cheia");
     } else {
-        contents[++top_] = data;
+        // COLOQUE SEU CODIGO AQUI...
     }
 }
 
 template<typename T>
 T structures::ArrayStack<T>::pop() {
-    if (empty()) {
-        throw std::out_of_range("pilha vazia");
-    } else {
-        return contents[top_--];
-    }
+    // COLOQUE SEU CODIGO AQUI...
 }
 
 template<typename T>
 T& structures::ArrayStack<T>::top() {
-    if (empty()) {
-        throw std::out_of_range("pilha vazia");
-    } else {
-        return contents[top_];
-    }
+    // COLOQUE SEU CODIGO AQUI...
 }
 
 template<typename T>
 void structures::ArrayStack<T>::clear() {
-    top_ = -1;
+    // COLOQUE SEU CODIGO AQUI...
 }
 
 template<typename T>
 std::size_t structures::ArrayStack<T>::size() {
-    return top_ + 1;
+    // COLOQUE SEU CODIGO AQUI...
 }
 
 template<typename T>
 std::size_t structures::ArrayStack<T>::max_size() {
-    return max_size_;
+    // COLOQUE SEU CODIGO AQUI...
 }
 
 template<typename T>
 bool structures::ArrayStack<T>::empty() {
-    return top_ == -1;
+    // COLOQUE SEU CODIGO AQUI...
 }
 
 template<typename T>
 bool structures::ArrayStack<T>::full() {
-    return static_cast<std::size_t>(top_) == max_size_ - 1;
+    // COLOQUE SEU CODIGO AQUI...
 }
