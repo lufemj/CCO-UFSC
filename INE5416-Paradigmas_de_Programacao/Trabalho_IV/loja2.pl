@@ -4,11 +4,11 @@ camiseta(branca).
 camiseta(verde).
 camiseta(vermelha).
 
-nome(Fabricio).
-nome(Gilberto).
-nome(Otavio).
-nome(Pedro).
-nome(Tulio).
+nome(fabricio).
+nome(gilberto).
+nome(otavio).
+nome(pedro).
+nome(tulio).
 
 companhia(avo).
 companhia(filho).
@@ -26,13 +26,13 @@ carro(crossover).
 carro(hatch).
 carro(pickup).
 carro(sedan).
-carro(SUV).
+carro(suv).
 
-combustivel(5L).
-combustivel(10L).
-combustivel(15L).
-combustivel(20L).
-combustivel(25L).
+combustivel('5L').
+combustivel('10L').
+combustivel('15L').
+combustivel('20L').
+combustivel('25L').
 
 
 
@@ -61,12 +61,12 @@ solucao(ListaSolucao) :-
         cliente(Camiseta2, Nome2, Companhia2, Compra2, Carro2, Combustivel2),
         cliente(Camiseta3, Nome3, Companhia3, Compra3, Carro3, Combustivel3),
         cliente(Camiseta4, Nome4, Companhia4, Compra4, Carro4, Combustivel4),
-        cliente(Camiseta5, Nome5, Companhia5, Compra5, Carro5, Combustivel5),
+        cliente(Camiseta5, Nome5, Companhia5, Compra5, Carro5, Combustivel5)
         
     ],
 
     %Otávio está ao lado do dono do Hatch.
-    aoLado(cliente(_, Otavio, _, _, _, _), cliente(_, _, _, _, Hatch, _), ListaSolucao),
+    aoLado(cliente(_, otavio, _, _, _, _), cliente(_, _, _, _, Hatch, _), ListaSolucao),
 
     %Quem vai comprar Água está em algum lugar entre o cliente de Vermelho e quem vai comprar Refrigerante, nessa ordem.
     aoLado(cliente(vermelha, _, _, _, _, _), cliente(_, _, _, agua, _, _), ListaSolucao),
@@ -75,23 +75,23 @@ solucao(ListaSolucao) :-
     %Na quinta posição está o cliente que está acompanhado do Filho.
     member(cliente(_, _, filho, _, _, _), ListaSolucao),
 
-    %Gilberto está em algum lugar à direita do cliente de camiseta Vermelha.
-    aDireita(cliente(vermelha, _, _, _, _, _), cliente(_, Gilberto, _, _, _, _), ListaSolucao),
+    %gilberto está em algum lugar à direita do cliente de camiseta Vermelha.
+    aDireita(cliente(vermelha, _, _, _, _, _), cliente(_, gilberto, _, _, _, _), ListaSolucao),
 
     %O dono do Hatch está exatamente à esquerda de quem vai comprar um Salgadinho.
     aEsquerda(cliente(_, _, _, salgadinho, Hatch, _), cliente(_, _, _, _, _, _), ListaSolucao),
 
     %Quem abasteceu 15 l está exatamente à esquerda de quem abasteceu 20 l.
-    aEsquerda(cliente(_, _, _, _, _, 15L), cliente(_, _, _, _, _, 20L), ListaSolucao),
+    aEsquerda(cliente(_, _, _, _, _, '15L'), cliente(_, _, _, _, _, '20L'), ListaSolucao),
 
-    %O dono do SUV está ao lado do cliente que está acompanhado do Irmão.
-    aoLado(cliente(_, _, irmao, _, SUV, _), cliente(_, _, _, _, SUV, _), ListaSolucao),
+    %O dono do suv está ao lado do cliente que está acompanhado do Irmão.
+    aoLado(cliente(_, _, irmao, _, suv, _), cliente(_, _, _, _, suv, _), ListaSolucao),
 
     %O cliente que abasteceu 25 l está exatamente à direita do cliente de camiseta Verde.
-    aDireita(cliente(verde, _, _, _, _, _), cliente(_, _, _, _, _, 25L), ListaSolucao),
+    aDireita(cliente(verde, _, _, _, _, _), cliente(_, _, _, _, _, '25L'), ListaSolucao),
 
-    %Pedro está ao lado de quem está acompanhado do Irmão.
-    aoLado(cliente(_, Pedro, _, _, _, _), cliente(_, _, irmao, _, _, _), ListaSolucao),
+    %pedro está ao lado de quem está acompanhado do Irmão.
+    aoLado(cliente(_, pedro, _, _, _, _), cliente(_, _, irmao, _, _, _), ListaSolucao),
 
     %O cliente de Azul está exatamente à esquerda de quem vai comprar um Suco.
     aEsquerda(cliente(azul, _, _, _, _, _), cliente(_, _, _, suco, _, _), ListaSolucao),
@@ -100,10 +100,10 @@ solucao(ListaSolucao) :-
     aEsquerda(cliente(_, _, tio, _, crossover, _), cliente(_, _, _, _, crossover, _), ListaSolucao),
 
     %Fabrício está ao lado de quem está acompanhado do Pai.
-    aoLado(cliente(_, Fabricio, _, _, _, _), cliente(_, _, pai, _, _, _), ListaSolucao),
+    aoLado(cliente(_, fabricio, _, _, _, _), cliente(_, _, pai, _, _, _), ListaSolucao),
 
     %O cliente que abasteceu 10 l está em algum lugar à direita do cliente de Verde.
-    aDireita(cliente(verde, _, _, _, _, _), cliente(_, _, _, _, _, 10L), ListaSolucao),
+    aDireita(cliente(verde, _, _, _, _, _), cliente(_, _, _, _, _, '10L'), ListaSolucao),
 
     %O cliente de camiseta Vermelha está em algum lugar entre quem está acompanhado do Avô e o dono da Pickup, nessa ordem.
     aoLado(cliente(_, _, avo, _, _, _), cliente(vermelha, _, _, _, _, _), ListaSolucao),
@@ -113,7 +113,7 @@ solucao(ListaSolucao) :-
     aEsquerda(cliente(_, _, _, _, _, MenosCombustivel), _, ListaSolucao),
     aEsquerda(_, cliente(_, _, _, _, _, MenosCombustivel), ListaSolucao),
     MenosCombustivel =.. [_, _, _, _, _, MenosL],
-    member(MenosL, [5L, 10L, 15L, 20L, 25L]),
+    member(MenosL, ['5L', '10L', '15L', '20L', '25L']),
 
     %O dono do Crossover vai comprar Suco.
     member(cliente(_, _, _, suco, crossover, _), ListaSolucao),
@@ -121,8 +121,8 @@ solucao(ListaSolucao) :-
     %Quem está acompanhado do Irmão está exatamente à esquerda do dono da Pickup.
     aEsquerda(cliente(_, _, irmao, _, _, _), cliente(_, _, _, _, pickup, _), ListaSolucao),
 
-    %Pedro está em algum lugar à direita do cliente de camiseta Branca.
-    aDireita(cliente(branca, _, _, _, _, _), cliente(_, Pedro, _, _, _, _), ListaSolucao),
+    %pedro está em algum lugar à direita do cliente de camiseta Branca.
+    aDireita(cliente(branca, _, _, _, _, _), cliente(_, pedro, _, _, _, _), ListaSolucao),
 
     %O cliente que vai comprar Água está exatamente à direita do dono do Crossover.
     aDireita(cliente(_, _, _, agua, _, _), cliente(_, _, _, _, crossover, _), ListaSolucao),
@@ -151,4 +151,4 @@ solucao(ListaSolucao) :-
     todosDiferentes([Carro1, Carro2, Carro3, Carro4, Carro5]),
 
     combustivel(Combustivel1), combustivel(Combustivel2), combustivel(Combustivel3), combustivel(Combustivel4), combustivel(Combustivel5),
-    todosDiferentes([Combustivel1, Combustivel2, Combustivel3, Combustivel4, Combustivel5]),
+    todosDiferentes([Combustivel1, Combustivel2, Combustivel3, Combustivel4, Combustivel5]).
