@@ -66,24 +66,91 @@ solucao(ListaSolucao) :-
     ],
 
     %Otávio está ao lado do dono do Hatch.
-    aoLado(cliente(_, Otavio, _, _, _, _), cliente(_, _, _, _, Hatch, _), ListaSolucao)
+    aoLado(cliente(_, Otavio, _, _, _, _), cliente(_, _, _, _, hatch, _), ListaSolucao),
 
+    %Quem vai comprar Água está em algum lugar entre o cliente de Vermelho e quem vai comprar Refrigerante, nessa ordem.
+    entre(cliente(vermelha, _, _, _, _, _), cliente(_, _, _, agua, _, _), cliente(_, _, _, refrigerante, _, _), ListaSolucao),
+
+    %Na quinta posição está o cliente que está acompanhado do Filho.
+    noCanto(cliente(_, _, filho, _, _, _), ListaSolucao),
+
+    %Gilberto está em algum lugar à direita do cliente de camiseta Vermelha.
+    aDireita(cliente(vermelha, _, _, _, _, _), cliente(_, Gilberto, _, _, _, _), ListaSolucao),
+
+    %O dono do Hatch está exatamente à esquerda de quem vai comprar um Salgadinho.
+    aoLado(cliente(_, _, _, salgadinho, hatch, _), cliente(_, _, _, _, _, _), ListaSolucao),
+
+    %Quem abasteceu 15 l está exatamente à esquerda de quem abasteceu 20 l.
+    aEsquerda(cliente(_, _, _, _, _, 15), cliente(_, _, _, _, _, 20), ListaSolucao),
+
+    %O dono do SUV está ao lado do cliente que está acompanhado do Irmão.
+    aoLado(cliente(_, _, _, _, SUV, _), cliente(_, _, irmao, _, _, _), ListaSolucao),
+
+    %O cliente que abasteceu 25 l está exatamente à direita do cliente de camiseta Verde.
+    aDireita(cliente(verde, _, _, _, _, _), cliente(_, _, _, _, _, 25), ListaSolucao),
+
+    %Pedro está ao lado de quem está acompanhado do Irmão.
+    aoLado(cliente(_, Pedro, _, _, _, _), cliente(_, _, irmao, _, _, _), ListaSolucao),
+
+    %O cliente de Azul está exatamente à esquerda de quem vai comprar um Suco.
+    aoLado(cliente(azul, _, _, _, _, _), cliente(_, _, _, suco, _, _), ListaSolucao),
+
+    %O dono do Crossover está exatamente à esquerda do cliente que está acompanhado do Tio.
+    aoLado(cliente(_, _, _, _, crossover, _), cliente(_, _, tio, _, _, _), ListaSolucao),
+
+    %Fabrício está ao lado de quem está acompanhado do Pai.
+    aoLado(cliente(_, fabricio, _, _, _, _), cliente(_, _, pai, _, _, _), ListaSolucao),
+
+    %O cliente que abasteceu 10 l está em algum lugar à direita do cliente de Verde.
+    aDireita(cliente(verde, _, _, _, _, _), cliente(_, _, _, _, _, 10), ListaSolucao),
+
+    %O cliente de camiseta Vermelha está em algum lugar entre quem está acompanhado do Avô e o dono da Pickup, nessa ordem.
+    entre(cliente(_, _, avo, _, _, _), cliente(vermelha, _, _, _, _, _), cliente(_, _, _, _, pickup, _), ListaSolucao),
+
+    %Na terceira posição está o cliente que abasteceu menos combustível.
+    nth0(2, ListaSolucao, cliente(_, _, _, _, _, 5)),
+
+    %O dono do Crossover vai comprar Suco.
+    member(cliente(_, _, _, suco, crossover, _), ListaSolucao),
+
+    %Quem está acompanhado do Irmão está exatamente à esquerda do dono da Pickup.
+    aoLado(cliente(_, _, irmao, _, _, _), cliente(_, _, _, _, pickup, _), ListaSolucao),
+
+    %Pedro está em algum lugar à direita do cliente de camiseta Branca.
+    aDireita(cliente(branca, _, _, _, _, _), cliente(_, Pedro, _, _, _, _), ListaSolucao),
+
+    %O cliente que vai comprar Água está exatamente à direita do dono do Crossover.
+    aoLado(cliente(_, _, _, agua, _, _), cliente(_, _, _, _, crossover, _), ListaSolucao),
+
+    %O cliente de camiseta Verde está em algum lugar à esquerda do dono da Pickup.
+    aEsquerda(cliente(verde, _, _, _, _, _), cliente(_, _, _, _, pickup, _), ListaSolucao),
+
+    % Restrições adicionais para as propriedades dos objetos
+    todosDiferentes([Camiseta1, Camiseta2, Camiseta3, Camiseta4, Camiseta5]),
+    todosDiferentes([Nome1, Nome2, Nome3, Nome4, Nome5]),
+    todosDiferentes([Companhia1, Companhia2, Companhia3, Companhia4, Companhia5]),
+    todosDiferentes([Compra1, Compra2, Compra3, Compra4, Compra5]),
+    todosDiferentes([Carro1, Carro2, Carro3, Carro4, Carro5]),
+    todosDiferentes([Combustivel1, Combustivel2, Combustivel3, Combustivel4, Combustivel5]).
+   
     
-    
-    %Testa todas as possibilidades...
-    nacionalidade(Nacionalidade1), nacionalidade(Nacionalidade2), nacionalidade(Nacionalidade3), nacionalidade(Nacionalidade4), nacionalidade(Nacionalidade5),
-    todosDiferentes([Nacionalidade1, Nacionalidade2, Nacionalidade3, Nacionalidade4, Nacionalidade5]),
-    
-    saida(Saida1), saida(Saida2), saida(Saida3), saida(Saida4), saida(Saida5),
-    todosDiferentes([Saida1, Saida2, Saida3, Saida4, Saida5]),
-    
-    carregamento(Carregamento1), carregamento(Carregamento2), carregamento(Carregamento3), carregamento(Carregamento4), carregamento(Carregamento5),
-    todosDiferentes([Carregamento1, Carregamento2, Carregamento3, Carregamento4, Carregamento5]),
-    
-    chamine(Chamine1), chamine(Chamine2), chamine(Chamine3), chamine(Chamine4), chamine(Chamine5),
-    todosDiferentes([Chamine1, Chamine2, Chamine3, Chamine4, Chamine5]),
-    
-    destino(Destino1), destino(Destino2), destino(Destino3), destino(Destino4), destino(Destino5),
-    todosDiferentes([Destino1, Destino2, Destino3, Destino4, Destino5]).
+    % Testa todas as possibilidades...
+    camiseta(Camiseta1), camiseta(Camiseta2), camiseta(Camiseta3), camiseta(Camiseta4), camiseta(Camiseta5),
+    todosDiferentes([Camiseta1, Camiseta2, Camiseta3, Camiseta4, Camiseta5]),
+
+    nome(Nome1), nome(Nome2), nome(Nome3), nome(Nome4), nome(Nome5),
+    todosDiferentes([Nome1, Nome2, Nome3, Nome4, Nome5]),
+
+    companhia(Companhia1), companhia(Companhia2), companhia(Companhia3), companhia(Companhia4), companhia(Companhia5),
+    todosDiferentes([Companhia1, Companhia2, Companhia3, Companhia4, Companhia5]),
+
+    compra(Compra1), compra(Compra2), compra(Compra3), compra(Compra4), compra(Compra5),
+    todosDiferentes([Compra1, Compra2, Compra3, Compra4, Compra5]),
+
+    carro(Carro1), carro(Carro2), carro(Carro3), carro(Carro4), carro(Carro5),
+    todosDiferentes([Carro1, Carro2, Carro3, Carro4, Carro5]),
+
+    combustivel(Combustivel1), combustivel(Combustivel2), combustivel(Combustivel3), combustivel(Combustivel4), combustivel(Combustivel5),
+    todosDiferentes([Combustivel1, Combustivel2, Combustivel3, Combustivel4, Combustivel5]).
     
     
