@@ -30,7 +30,7 @@ def Dijkstra(G, s):
 
 
 grafo = g.Grafo()
-grafo.ler("grafo_2.txt")
+grafo.ler("grafo_exemplo.txt")
 origem = 1
 
 distancias, arvore = Dijkstra(grafo, origem)

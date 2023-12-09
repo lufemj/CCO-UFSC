@@ -27,7 +27,7 @@ def buscaEmLargura(G, v):
         indiceNivel += 1
 
 grafo = g.Grafo()
-grafo.ler("grafo_2.txt")
+grafo.ler("grafo_exemplo.txt")
 origem = 3
 
 buscaEmLargura(grafo, origem - 1)
