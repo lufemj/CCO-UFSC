@@ -1,1 +1,1 @@
-print('tudo certo')
+print(function(2))
