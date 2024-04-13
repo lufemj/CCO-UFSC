@@ -1,3 +1,5 @@
+#Aluno: Luis Fernando Mendonça Junior - 22103512
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -8,11 +10,11 @@ def grafico(raiz_aproximada, coeficientes):
     tangente = np.polyval(np.polyder(coeficientes), x0) * (x_vals - x0) + np.polyval(coeficientes, x0)
     plt.figure(figsize=(10, 5))
     plt.plot(x_vals, y_vals, label='p(x)')
-    plt.plot(x_vals, tangente, label="Tangente em x0", linestyle='--', color='orange')
-    plt.scatter(raiz_aproximada, 0, color='red', label='Raiz Aproximada')
+    #plt.plot(x_vals, tangente, label="Tangente em x0", linestyle='--', color='orange')
+    #plt.scatter(raiz_aproximada, 0, color='red', label='Raiz Aproximada')
     plt.axhline(0, color='black', linewidth=0.5)
     plt.axvline(raiz_aproximada, color='gray', linestyle='--', linewidth=0.5)
-    plt.title("Polinômio e sua Derivada")
+    plt.title("Gráfico do polinômio")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.legend()
@@ -43,9 +45,9 @@ def newton(coeficientes, x0, itmax):
     return xn
 
 if __name__ == "__main__":
-    coeficientes = [2, 0, -3, 3, -4]        # Coeficientes do polinômio p(x) = x^4 + x^3 + x^2 + x + C
-    x0 = -2                                 # Valor inicial para x0
-    itmax = 10                              # Número de iterações                         
+    coeficientes = [2, 0, -3, 3, -4]   # Coeficientes do polinômio p(x) = x^4 + x^3 + x^2 + x + C
+    x0 = -2                            # Valor inicial para x0
+    itmax = 10                         # Número de iterações                         
 
     raiz_aproximada = newton(coeficientes, x0, itmax)
     print(f"Raiz aproximada após {itmax} iterações: {raiz_aproximada} ")

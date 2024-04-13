@@ -1,3 +1,5 @@
+#Aluno: Luis Fernando Mendonça Junior - 22103512
+
 import cmath
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,8 +53,8 @@ if __name__ == "__main__":
     x0 = -0.5                                             # Valor inicial para x0
     x1 = 0                                                # Valor inicial para x1
     x2 = 0.5                                              # Valor inicial para x2
-    intervalos_arbitrario = [(0.2, 1,5), (1.6, 2.5)]      # Intervalos arbitrários para encontrar as raízes reais
-    itmax = 10                                            # Número de iterações
+    intervalos_arbitrario = [(0.2, 1.5), (1.6, 2.5)]      # Intervalos arbitrários para encontrar as raízes reais
+    itmax = 10                                           # Número de iterações
 
     raizes_reais = []
     for intervalo in intervalos_arbitrario:
